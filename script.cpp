@@ -43,17 +43,17 @@ void print_options() {
   std::cout << "3 - get proficiency bonus" << '\n';
 }
 
-int get_ability_mod() {
-  int ability_score;
-  std::cout << "\nWhat is your ability score?" << '\n';
-  std::cin >> ability_score;
-  if (ability_score == 1) {
-    return -5;
-  }
-  if (ability_score > 1 && ability_score) {
-    /* code */
-  }
-}
+// int get_ability_mod() {
+//   int ability_score;
+//   std::cout << "\nWhat is your ability score?" << '\n';
+//   std::cin >> ability_score;
+//   if (ability_score == 1) {
+//     return -5;
+//   }
+//   if (ability_score > 1 && ability_score) {
+//     /* code */
+//   }
+// }
 
 int get_proficiency() {
   int proficiency_bonus;
