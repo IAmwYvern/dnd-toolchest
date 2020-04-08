@@ -41,14 +41,14 @@ void print_options() {
   std::cout << "1 - calculate hp" << '\n';
   std::cout << "2 - calculate armor class" << '\n';
   std::cout << "3 - get proficiency bonus" << '\n';
-  std::cout << "3 - get ability modifier" << '\n';
+  std::cout << "4 - get ability modifier" << '\n';
 }
 
 int get_ability_mod() {
   int ability_score;
   std::cout << "\nWhat is your ability score?" << '\n';
   std::cin >> ability_score;
-  ability_score = std::min(ability_score, 30)
+  ability_score = std::min(ability_score, 30);
   if (ability_score == 1) {
     return -5;
   }
