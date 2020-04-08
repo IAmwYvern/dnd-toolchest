@@ -40,6 +40,32 @@ void print_options() {
   std::cout << "what do you wish to do?" << '\n';
   std::cout << "1 - calculate hp" << '\n';
   std::cout << "2 - calculate armor class" << '\n';
+  std::cout << "3 - get proficiency bonus" << '\n';
+}
+
+int get_proficiency() {
+  int proficiency_bonus;
+  dnd_character character;
+  std::cout << "\nWhat is your total character level?" << '\n';
+  std::cin >> character.level;
+  character.level = std::min(character.level, 20);
+
+  if (character.level <= 4) {
+    return 2;
+  }
+  if (character.level <= 8) {
+    return 3;
+  }
+  if (character.level <= 12) {
+    return 4;
+  }
+  if (character.level <= 16) {
+    return 5;
+  }
+  if (character.level <= 20) {
+    return 6;
+  }
+  return 0;
 }
 
 int calc_ac() {
@@ -293,6 +319,12 @@ int main(int argc, char const *argv[]) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
     return 0;
+  }
+  if (opt == 3) {
+    int prof;
+    prof = get_proficiency();
+    std::cout << "Your proficiency bonus is ";
+    std::cout << "+" << prof << '\n';
   }
 
   return 0;
