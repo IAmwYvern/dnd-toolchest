@@ -325,6 +325,9 @@ int main(int argc, char const *argv[]) {
     prof = get_proficiency();
     std::cout << "Your proficiency bonus is ";
     std::cout << "+" << prof << '\n';
+    std::cout << "press enter to exit..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
   }
 
   return 0;
