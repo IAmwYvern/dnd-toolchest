@@ -12,8 +12,17 @@ void print_welcome_message(std::string ver) {
   std::cout << "=================================================================" << '\n';
 }
 
+void print_options() {
+  std::cout << "what do you wish to do?" << '\n';
+  std::std::cout << "1 - calculate hp" << '\n';
+}
+
 int main(int argc, char const *argv[]) {
   std::string version =  "1.0.0";
   print_welcome_message(version);
+  print_options();
+
+  
+
   return 0;
 }
