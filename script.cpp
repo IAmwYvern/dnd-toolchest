@@ -41,6 +41,63 @@ void print_options() {
   std::cout << "1 - calculate hp" << '\n';
   std::cout << "2 - calculate armor class" << '\n';
   std::cout << "3 - get proficiency bonus" << '\n';
+  std::cout << "4 - get ability modifier" << '\n';
+}
+
+int get_ability_mod() {
+  int ability_score;
+  std::cout << "\nWhat is your ability score?" << '\n';
+  std::cin >> ability_score;
+  ability_score = std::min(ability_score, 30);
+  if (ability_score == 1) {
+    return -5;
+  }
+  if (ability_score > 1 && ability_score < 4) {
+    return -4;
+  }
+  if (ability_score > 3 && ability_score < 6) {
+    return -3;
+  }
+  if (ability_score > 5 && ability_score < 8) {
+    return -2;
+  }
+  if (ability_score > 7 && ability_score < 10) {
+    return -1;
+  }
+  if (ability_score > 9 && ability_score < 12) {
+    return 0;
+  }
+  if (ability_score > 11 && ability_score < 14) {
+    return 1;
+  }
+  if (ability_score > 13 && ability_score < 16) {
+    return 2;
+  }
+  if (ability_score > 15 && ability_score < 18) {
+    return 3;
+  }
+  if (ability_score > 17 && ability_score < 20) {
+    return 4;
+  }
+  if (ability_score > 19 && ability_score < 22) {
+    return 5;
+  }
+  if (ability_score > 21 && ability_score < 24) {
+    return 6;
+  }
+  if (ability_score > 23 && ability_score < 26) {
+    return 7;
+  }
+  if (ability_score > 25 && ability_score < 28) {
+    return 8;
+  }
+  if (ability_score > 27 && ability_score < 30) {
+    return 9;
+  }
+  if (ability_score == 30) {
+    return 10;
+  }
+  return 0;
 }
 
 int get_proficiency() {
@@ -50,20 +107,20 @@ int get_proficiency() {
   std::cin >> character.level;
   character.level = std::min(character.level, 20);
 
-  if (character.level <= 4) {
-    return 2;
+  if (character.level <= 20 && character.level >= 17) {
+    return 6;
   }
-  if (character.level <= 8) {
-    return 3;
-  }
-  if (character.level <= 12) {
-    return 4;
-  }
-  if (character.level <= 16) {
+  if (character.level <= 16 && character.level >= 13) {
     return 5;
   }
-  if (character.level <= 20) {
-    return 6;
+  if (character.level <= 12 && character.level >= 9) {
+    return 4;
+  }
+  if (character.level <= 8 && character.level >= 5) {
+    return 3;
+  }
+  if (character.level <= 4 && character.level >= 1) {
+    return 2;
   }
   return 0;
 }
@@ -323,12 +380,20 @@ int main(int argc, char const *argv[]) {
   if (opt == 3) {
     int prof;
     prof = get_proficiency();
-    std::cout << "Your proficiency bonus is ";
+    std::cout << "\nYour proficiency bonus is ";
     std::cout << "+" << prof << '\n';
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
   }
-
+  if (opt == 4) {
+    int mod;
+    mod = get_ability_mod();
+    std::cout << "\nYour ability modifier is " << '\n';
+    std::cout << "+" << mod << '\n';
+    std::cout << "press enter to exit..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
+  }
   return 0;
 }
