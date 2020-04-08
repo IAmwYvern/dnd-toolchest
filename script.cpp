@@ -241,7 +241,6 @@ int calc_hp() {
     for (size_t i = 2; i <= character.level; i++) {
       int rand_num = (std::rand() % character_class.hit_dice) + 1;
       hp += rand_num;
-      std::cout << rand_num << '\n';
     }
   } else {
     for (size_t i = 2; i <= character.level; i++) {
