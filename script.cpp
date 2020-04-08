@@ -43,6 +43,18 @@ void print_options() {
   std::cout << "3 - get proficiency bonus" << '\n';
 }
 
+int get_ability_mod() {
+  int ability_score;
+  std::cout << "\nWhat is your ability score?" << '\n';
+  std::cin >> ability_score;
+  if (ability_score == 1) {
+    return -5;
+  }
+  if (ability_score > 1 && ability_score) {
+    /* code */
+  }
+}
+
 int get_proficiency() {
   int proficiency_bonus;
   dnd_character character;
@@ -50,20 +62,20 @@ int get_proficiency() {
   std::cin >> character.level;
   character.level = std::min(character.level, 20);
 
-  if (character.level <= 4) {
-    return 2;
+  if (character.level <= 20 && character.level >= 17) {
+    return 6;
   }
-  if (character.level <= 8) {
-    return 3;
-  }
-  if (character.level <= 12) {
-    return 4;
-  }
-  if (character.level <= 16) {
+  if (character.level <= 16 && character.level >= 13) {
     return 5;
   }
-  if (character.level <= 20) {
-    return 6;
+  if (character.level <= 12 && character.level >= 9) {
+    return 4;
+  }
+  if (character.level <= 8 && character.level >= 5) {
+    return 3;
+  }
+  if (character.level <= 4 && character.level >= 1) {
+    return 2;
   }
   return 0;
 }
