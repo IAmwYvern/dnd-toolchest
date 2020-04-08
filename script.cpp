@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <limits>
 
 int strength = 0;
 int dexterity = 1;
@@ -38,6 +39,89 @@ void print_welcome_message(std::string ver) {
 void print_options() {
   std::cout << "what do you wish to do?" << '\n';
   std::cout << "1 - calculate hp" << '\n';
+  std::cout << "2 - calculate armor class" << '\n';
+}
+
+int calc_ac() {
+  int base_ac = 0;
+
+  dnd_character character;
+
+  std::cout << "\nWhat is your dexterity mod? (without the '+')" << '\n';
+  std::cin >> character.ability_mods[dexterity];
+  int bonus = character.ability_mods[dexterity];
+
+  std::cout << "\nWhat armor does your character have? (all lowercase, see the armor table, type 'none' if they don't have any)" << '\n';
+  std::string armor;
+  std::cin >> armor;
+  //light armor
+  if (armor == "padded") {
+    base_ac = 11;
+  }
+  if (armor == "leather") {
+    base_ac = 11;
+  }
+  if (armor == "studded leather") {
+    base_ac = 12;
+  }
+  //medium armor
+  if (armor == "hide") {
+    base_ac = 12;
+    bonus = std::min(bonus, 2);
+  }
+  if (armor == "chain shirt") {
+    base_ac = 13;
+    bonus = std::min(bonus, 2);
+  }
+  if (armor == "scale mail") {
+    base_ac = 13;
+    bonus = std::min(bonus, 2);
+  }
+  if (armor == "breastplate") {
+    base_ac = 14;
+    bonus = std::min(bonus, 2);
+  }
+  if (armor == "half plate") {
+    base_ac = 15;
+    bonus = std::min(bonus, 2);
+  }
+  //heavy armor
+  if (armor == "ring mail") {
+    base_ac = 14;
+    bonus = 0;
+  }
+  if (armor == "chain mail") {
+    base_ac = 16;
+    bonus = 0;
+  }
+  if (armor == "splint") {
+    base_ac = 17;
+    bonus = 0;
+  }
+  if (armor == "plate") {
+    base_ac = 18;
+    bonus = 0;
+  }
+  if (armor == "none") {
+    base_ac = 10;
+    bonus = character.ability_mods[dexterity];
+  }
+  if (base_ac == 0) {
+    std::cout << "That is not a valid item!" << '\n';
+    return 0;
+  }
+
+  int ac = 0;
+
+  std::cout << "\nDoes your character have a shield? (y/n)" << '\n';
+  std::string has_shield;
+  std::cin >> has_shield;
+  if (has_shield == "y") {
+    ac += 2;
+  }
+
+  ac += base_ac + bonus;
+  return ac;
 }
 
 int calc_hp() {
@@ -183,10 +267,33 @@ int main(int argc, char const *argv[]) {
     int hp;
     hp = calc_hp();
     if (hp == 0) {
+      std::cout << "press enter to exit..." << '\n';
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cin.get();
       return 0;
     }
     std::cout << '\n' << "Your hp is " ;
     std::cout << hp << '\n';
+    std::cout << "press enter to exit..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
+    return 0;
+  }
+  if (opt == 2) {
+    int ac;
+    ac = calc_ac();
+    if (ac == 0) {
+      std::cout << "press enter to exit..." << '\n';
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cin.get();
+      return 0;
+    }
+    std::cout << '\n' << "Your AC is " ;
+    std::cout << ac << '\n';
+    std::cout << "press enter to exit..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
+    return 0;
   }
 
   return 0;
