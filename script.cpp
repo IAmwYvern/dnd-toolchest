@@ -41,6 +41,7 @@ void print_options() {
   std::cout << "1 - calculate hp" << '\n';
   std::cout << "2 - calculate armor class" << '\n';
   std::cout << "3 - get proficiency bonus" << '\n';
+  std::cout << "3 - get ability modifier" << '\n';
 }
 
 int get_ability_mod() {
