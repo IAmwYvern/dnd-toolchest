@@ -16,7 +16,7 @@ std::vector<int> levels_exp_req =
 { 0, 300, 900, 2700, 6500, 14000,
   23000, 34000, 48000, 64000, 85000, 100000,
   120000, 140000, 165000, 195000, 225000, 265000,
-  305000, 355000
+  305000, 355000, 355000
 };
 
 class dnd_class {
@@ -105,6 +105,10 @@ int get_level() {
   std::cout << "\nWhat is your exp value?" << '\n';\
   std::cin >> exp;
   for (size_t i = 0; i < levels_exp_req.size(); i++) {
+    if(exp == 355000) {
+      level = 20;
+      break;
+    }
     if (i == 0) {
       continue;
     }
@@ -114,7 +118,7 @@ int get_level() {
     }
   }
   int xp_left = levels_exp_req.at(level) - exp;
-  std::cout << "\nYou need " << xp_left << " more exp to reach level " << level + 1;
+  std::cout << "\nYou need " << xp_left << " more exp to reach level " << std::min(level + 1, 20);
   return level;
 }
 
