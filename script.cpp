@@ -410,6 +410,9 @@ int main(int argc, char const *argv[]) {
     int level;
     level = get_level();
     std::cout << "\nYour level is " << level << '\n';
+    std::cout << "press enter to exit..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
   }
   if (opt == 6) {
     start_init();
