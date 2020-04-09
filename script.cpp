@@ -49,55 +49,11 @@ int get_ability_mod() {
   std::cout << "\nWhat is your ability score?" << '\n';
   std::cin >> ability_score;
   ability_score = std::min(ability_score, 30);
-  if (ability_score == 1) {
-    return -5;
+  if (ability_score < 1) {
+    ability_score = 1;
   }
-  if (ability_score > 1 && ability_score < 4) {
-    return -4;
-  }
-  if (ability_score > 3 && ability_score < 6) {
-    return -3;
-  }
-  if (ability_score > 5 && ability_score < 8) {
-    return -2;
-  }
-  if (ability_score > 7 && ability_score < 10) {
-    return -1;
-  }
-  if (ability_score > 9 && ability_score < 12) {
-    return 0;
-  }
-  if (ability_score > 11 && ability_score < 14) {
-    return 1;
-  }
-  if (ability_score > 13 && ability_score < 16) {
-    return 2;
-  }
-  if (ability_score > 15 && ability_score < 18) {
-    return 3;
-  }
-  if (ability_score > 17 && ability_score < 20) {
-    return 4;
-  }
-  if (ability_score > 19 && ability_score < 22) {
-    return 5;
-  }
-  if (ability_score > 21 && ability_score < 24) {
-    return 6;
-  }
-  if (ability_score > 23 && ability_score < 26) {
-    return 7;
-  }
-  if (ability_score > 25 && ability_score < 28) {
-    return 8;
-  }
-  if (ability_score > 27 && ability_score < 30) {
-    return 9;
-  }
-  if (ability_score == 30) {
-    return 10;
-  }
-  return 0;
+  int ability_mod = (ability_score - 10) / 2;
+  return ability_mod;
 }
 
 int get_proficiency() {
@@ -106,27 +62,13 @@ int get_proficiency() {
   std::cout << "\nWhat is your total character level?" << '\n';
   std::cin >> character.level;
   character.level = std::min(character.level, 20);
-
-  if (character.level <= 20 && character.level >= 17) {
-    return 6;
-  }
-  if (character.level <= 16 && character.level >= 13) {
-    return 5;
-  }
-  if (character.level <= 12 && character.level >= 9) {
-    return 4;
-  }
-  if (character.level <= 8 && character.level >= 5) {
-    return 3;
-  }
-  if (character.level <= 4 && character.level >= 1) {
-    return 2;
-  }
-  return 0;
+  proficiency_bonus = 1 + ((character.level / 4) + character.level % 4);
+  return proficiency_bonus;
 }
 
 int calc_ac() {
   int base_ac = 0;
+  int ac = 0;
 
   dnd_character character;
 
@@ -134,67 +76,63 @@ int calc_ac() {
   std::cin >> character.ability_mods[dexterity];
   int bonus = character.ability_mods[dexterity];
 
+  std::cout << "\nIs your character a draconic sorcerer? (y/n)" << '\n';
+  std::string is_draconic_sorcerer;
+  std::cin >> is_draconic_sorcerer;
+  if (is_draconic_sorcerer == "y") {
+    base_ac = 13;
+    ac = base_ac + character.ability_mods[dexterity];
+    return ac;
+  }
+
   std::cout << "\nWhat armor does your character have? (all lowercase, see the armor table, type 'none' if they don't have any)" << '\n';
   std::string armor;
   std::cin >> armor;
   //light armor
   if (armor == "padded") {
     base_ac = 11;
-  }
-  if (armor == "leather") {
+  } else if (armor == "leather") {
     base_ac = 11;
-  }
-  if (armor == "studded leather") {
+  } else if (armor == "studded leather") {
     base_ac = 12;
-  }
+  } else if (armor == "hide") {
+    base_ac = 12;
+    bonus = std::min(bonus, 2);
   //medium armor
-  if (armor == "hide") {
-    base_ac = 12;
-    bonus = std::min(bonus, 2);
-  }
-  if (armor == "chain shirt") {
+  } else if (armor == "chain shirt") {
     base_ac = 13;
     bonus = std::min(bonus, 2);
-  }
-  if (armor == "scale mail") {
+  } else if (armor == "scale mail") {
     base_ac = 13;
     bonus = std::min(bonus, 2);
-  }
-  if (armor == "breastplate") {
+  } else if (armor == "breastplate") {
     base_ac = 14;
     bonus = std::min(bonus, 2);
-  }
-  if (armor == "half plate") {
+  } else if (armor == "half plate") {
     base_ac = 15;
     bonus = std::min(bonus, 2);
-  }
   //heavy armor
-  if (armor == "ring mail") {
+  } else if (armor == "ring mail") {
     base_ac = 14;
     bonus = 0;
-  }
-  if (armor == "chain mail") {
+  } else if (armor == "chain mail") {
     base_ac = 16;
     bonus = 0;
-  }
-  if (armor == "splint") {
+  } else if (armor == "splint") {
     base_ac = 17;
     bonus = 0;
-  }
-  if (armor == "plate") {
+  } else if (armor == "plate") {
     base_ac = 18;
     bonus = 0;
-  }
-  if (armor == "none") {
+  } else if (armor == "none") {
     base_ac = 10;
     bonus = character.ability_mods[dexterity];
   }
+
   if (base_ac == 0) {
     std::cout << "That is not a valid item!" << '\n';
     return 0;
   }
-
-  int ac = 0;
 
   std::cout << "\nDoes your character have a shield? (y/n)" << '\n';
   std::string has_shield;
@@ -210,8 +148,10 @@ int calc_ac() {
 int calc_hp() {
   int hp = 0;
   std::cout << '\n' << "What class is your character? (all lowercase!)" << '\n';
+
   std::string class_input;
-  std::cin >> class_input;
+  std::cin.ignore();
+  std::getline (std::cin,class_input);
   dnd_class character_class;
   character_class.name = "";
 
@@ -219,60 +159,46 @@ int calc_hp() {
     if (class_input == "artificer") {
       character_class.name = "artificer";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "barbarian"){
+    } else if (class_input == "barbarian") {
       character_class.name = "barbarian";
       character_class.hit_dice = 12;
-    }
-    if (class_input == "bard") {
+    } else if (class_input == "bard") {
       character_class.name = "bard";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "cleric") {
+    } else if (class_input == "cleric") {
       character_class.name = "cleric";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "druid") {
+    } else if (class_input == "druid") {
       character_class.name = "druid";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "fighter") {
+    } else if (class_input == "fighter") {
       character_class.name = "fighter";
       character_class.hit_dice = 10;
-    }
-    if (class_input == "monk") {
+    } else if (class_input == "monk") {
       character_class.name = "monk";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "paladin") {
+    } else if (class_input == "paladin") {
       character_class.name = "paladin";
       character_class.hit_dice = 10;
-    }
-    if (class_input == "ranger") {
+    } else if (class_input == "ranger") {
       character_class.name = "ranger";
       character_class.hit_dice = 10;
-    }
-    if (class_input == "rogue") {
+    } else if (class_input == "rogue") {
       character_class.name = "rogue";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "ranger") {
+    } else if (class_input == "ranger") {
       character_class.name = "ranger";
       character_class.hit_dice = 10;
-    }
-    if (class_input == "sorcerer") {
+    } else if (class_input == "sorcerer") {
       character_class.name = "sorcerer";
       character_class.hit_dice = 6;
-    }
-    if (class_input == "warlock") {
+    } else if (class_input == "warlock") {
       character_class.name = "warlock";
       character_class.hit_dice = 8;
-    }
-    if (class_input == "wizard") {
+    } else if (class_input == "wizard") {
       character_class.name = "wizard";
       character_class.hit_dice = 6;
-    }
-    if (class_input == "blood hunter") {
+    } else if (class_input == "blood hunter") {
       character_class.name = "blood hunter";
       character_class.hit_dice = 10;
     }
@@ -297,6 +223,13 @@ int calc_hp() {
   std::cin >> is_hill_dwarf;
   if (is_hill_dwarf == "y") {
     hp += character.level;
+  } else if (character_class.name == "sorcerer") {
+    std::cout << "\nIs your character a draconic sorcerer? (y/n)" << '\n';
+    std::string is_draconic_sorcerer;
+    std::cin >> is_draconic_sorcerer;
+    if (is_draconic_sorcerer == "y") {
+      hp += character.level;
+    }
   }
 
   std::cout << '\n' << "Does your character have the tough feat? (y/n)" << '\n';
@@ -389,8 +322,11 @@ int main(int argc, char const *argv[]) {
   if (opt == 4) {
     int mod;
     mod = get_ability_mod();
-    std::cout << "\nYour ability modifier is " << '\n';
-    std::cout << "+" << mod << '\n';
+    std::cout << "\nYour ability modifier is ";
+    if (mod >= 0) {
+      std::cout << "+" ;
+    }
+    std::cout << mod << '\n';
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
