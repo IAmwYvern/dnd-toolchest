@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -26,11 +27,18 @@ class dnd_class {
 
 class dnd_character {
   public:
+    std::string name;
     dnd_class character_class;
     int ability_mods[5];
     int level;
     int proficiency_bonus;
+    int init;
+    int AC;
 };
+
+bool cmp_init(dnd_character const & a, dnd_character const & b) {
+  return a.init > b.init;
+}
 
 void print_welcome_message(std::string ver) {
   std::cout << "=================================================================" << '\n';
@@ -51,6 +59,44 @@ void print_options() {
   std::cout << "3 - get proficiency bonus" << '\n';
   std::cout << "4 - get ability modifier" << '\n';
   std::cout << "5 - get level based on exp" << '\n';
+  std::cout << "6 - keep track of initiative" << '\n';
+}
+
+void start_init() {
+  dnd_character entites[99];
+  std::cout << "\nPlease enter the number of players and creatures in the fight" << '\n';
+  int entity_count;
+  std::cin >> entity_count;
+  std::cout << "=== please enter all the creatures ===" << '\n';
+  for (size_t i = 0; i < entity_count; i++) {
+    std::cout << "=== creature " << i + 1 << '\n';
+    std::cout << "name : ";
+    std::cin.ignore();
+    std::getline(std::cin, entites[i].name);
+    std::cout << "init : ";
+    std::cin >> entites[i].init;
+    std::cout << "AC : ";
+    std::cin >> entites[i].AC;
+    std::cout << '\n';
+  }
+  std::sort(entites, entites + entity_count, cmp_init);
+  int iter = 0;
+  std::cout << "====== INIT BEGIN ======" << '\n';
+  std::cout << "press '\\' and enter to stop." << '\n';
+  std::cout << '\n';
+  while (true) {
+    char c = getchar();
+    if (c == 92) {
+      break;
+    }
+    std::cout << "It's " << entites[iter].name << "'s " << "turn.";
+    std::cout << "(init " << entites[iter].init <<", Ac " << entites[iter].AC << ")";
+    if (iter == entity_count - 1) {
+      iter = 0;
+      continue;
+    }
+    iter ++;
+  }
 }
 
 int get_level() {
@@ -115,7 +161,8 @@ int calc_ac() {
 
   std::cout << "\nWhat armor does your character have? (all lowercase, see the armor table, type 'none' if they don't have any)" << '\n';
   std::string armor;
-  std::cin >> armor;
+  std::cin.ignore();
+  std::getline(std::cin, armor);
   //light armor
   if (armor == "padded") {
     base_ac = 11;
@@ -363,6 +410,9 @@ int main(int argc, char const *argv[]) {
     int level;
     level = get_level();
     std::cout << "\nYour level is " << level << '\n';
+  }
+  if (opt == 6) {
+    start_init();
   }
   return 0;
 }
