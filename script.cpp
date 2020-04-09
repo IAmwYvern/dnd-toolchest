@@ -67,6 +67,8 @@ int get_level() {
       break;
     }
   }
+  int xp_left = levels_exp_req.at(level) - exp;
+  std::cout << "\nYou need " << xp_left << " more exp to reach level " << level + 1;
   return level;
 }
 
