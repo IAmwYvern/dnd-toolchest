@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <cstdlib>
 #include <limits>
 
@@ -9,6 +10,13 @@ int constitution = 2;
 int intelligence = 3;
 int wisdom = 4;
 int charisma = 5;
+
+std::vector<int> levels_exp_req =
+{ 0, 300, 900, 2700, 6500, 14000,
+  23000, 34000, 48000, 64000, 85000, 100000,
+  120000, 140000, 165000, 195000, 225000, 265000,
+  305000, 355000
+};
 
 class dnd_class {
   public:
@@ -42,6 +50,24 @@ void print_options() {
   std::cout << "2 - calculate armor class" << '\n';
   std::cout << "3 - get proficiency bonus" << '\n';
   std::cout << "4 - get ability modifier" << '\n';
+  std::cout << "5 - get level based on exp" << '\n';
+}
+
+int get_level() {
+  int exp = 0;
+  int level = 0;
+  std::cout << "\nWhat is your exp value?" << '\n';\
+  std::cin >> exp;
+  for (size_t i = 0; i < levels_exp_req.size(); i++) {
+    if (i == 0) {
+      continue;
+    }
+    if (exp < levels_exp_req.at(i) && exp >= levels_exp_req.at(i - 1)) {
+      level = i;
+      break;
+    }
+  }
+  return level;
 }
 
 int get_ability_mod() {
@@ -330,6 +356,11 @@ int main(int argc, char const *argv[]) {
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
+  }
+  if (opt == 5) {
+    int level;
+    level = get_level();
+    std::cout << "\nYour level is " << level << '\n';
   }
   return 0;
 }
