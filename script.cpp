@@ -351,7 +351,7 @@ int calc_hp() {
 }
 
 int main(int argc, char const *argv[]) {
-  std::string version =  "1.3.0";
+  std::string version =  "1.3.1";
   print_welcome_message(version);
   std::cout << "press enter to continue..." << '\n';
   std::cin.get();
