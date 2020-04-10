@@ -34,6 +34,8 @@ class dnd_character {
     int proficiency_bonus;
     int init;
     int AC;
+    int Max_HP;
+    int HP;
 };
 
 bool cmp_init(dnd_character const & a, dnd_character const & b) {
@@ -63,7 +65,7 @@ void print_options() {
 }
 
 void start_init() {
-  dnd_character entites[99];
+  dnd_character entities[99];
   std::cout << "\nPlease enter the number of players and creatures in the fight" << '\n';
   int entity_count;
   std::cin >> entity_count;
@@ -72,31 +74,32 @@ void start_init() {
     std::cout << "=== creature " << i + 1 << '\n';
     std::cout << "name : ";
     std::cin.ignore();
-    std::getline(std::cin, entites[i].name);
+    std::getline(std::cin, entities[i].name);
     std::cout << "init : ";
-    std::cin >> entites[i].init;
+    std::cin >> entities[i].init;
     std::cout << "AC : ";
-    std::cin >> entites[i].AC;
+    std::cin >> entities[i].AC;
     std::cout << '\n';
   }
-  std::sort(entites, entites + entity_count, cmp_init);
+  std::sort(entities, entities + entity_count, cmp_init);
   int iter = 0;
   std::cout << "====== INIT BEGIN ======" << '\n';
   std::cout << "press '\\' and enter to stop." << '\n';
   std::cout << '\n';
   while (true) {
-    char c = getchar();
+    int c = getchar();
     if (c == 92) {
       break;
     }
-    std::cout << "It's " << entites[iter].name << "'s " << "turn.";
-    std::cout << "(init " << entites[iter].init <<", Ac " << entites[iter].AC << ")";
+    std::cout << "It's " << entities[iter].name << "'s " << "turn.";
+    std::cout << "(init " << entities[iter].init <<", Ac " << entities[iter].AC << ")";
     if (iter == entity_count - 1) {
       iter = 0;
       continue;
     }
     iter ++;
   }
+  return;
 }
 
 int get_level() {
@@ -350,7 +353,7 @@ int calc_hp() {
 int main(int argc, char const *argv[]) {
   std::string version =  "1.3.0";
   print_welcome_message(version);
-  std::cout << "press any key to continue..." << '\n';
+  std::cout << "press enter to continue..." << '\n';
   std::cin.get();
   print_options();
 
@@ -388,8 +391,7 @@ int main(int argc, char const *argv[]) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
     return 0;
-  }
-  if (opt == 3) {
+  } else if (opt == 3) {
     int prof;
     prof = get_proficiency();
     std::cout << "\nYour proficiency bonus is ";
@@ -397,8 +399,7 @@ int main(int argc, char const *argv[]) {
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
-  }
-  if (opt == 4) {
+  } else if (opt == 4) {
     int mod;
     mod = get_ability_mod();
     std::cout << "\nYour ability modifier is ";
@@ -409,17 +410,17 @@ int main(int argc, char const *argv[]) {
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
-  }
-  if (opt == 5) {
+  } else if (opt == 5) {
     int level;
     level = get_level();
     std::cout << "\nYour level is " << level << '\n';
     std::cout << "press enter to exit..." << '\n';
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
-  }
-  if (opt == 6) {
+  } else if (opt == 6) {
     start_init();
+  } else {
+    std::cout << "error : invalid input." << '\n';
   }
   return 0;
 }
