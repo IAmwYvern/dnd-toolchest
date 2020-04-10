@@ -421,6 +421,9 @@ int main(int argc, char const *argv[]) {
     start_init();
   } else {
     std::cout << "error : invalid input." << '\n';
+    std::cout << "Press enter to exit..." << '\n';
+    std::cin.ignore();
+    char c = getchar();
   }
   return 0;
 }
