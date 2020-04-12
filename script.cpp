@@ -45,7 +45,7 @@ bool cmp_init(dnd_character const & a, dnd_character const & b) {
 void print_welcome_message(std::string ver) {
   std::cout << "=================================================================" << '\n';
   std::cout << '\n';
-  std::cout << "Welcome to DnD utilities! ver " + ver << '\n';
+  std::cout << "Welcome to the DnD Toolchest! ver " + ver << '\n';
   std::cout << "                 made by IAmwYvern " << '\n';
   std::cout << '\n';
   std::cout << "github repo : https://github.com/IAmwYvern/dnd-utilities" << '\n';
@@ -66,7 +66,7 @@ void print_options() {
 
 void start_init() {
   dnd_character entities[99];
-  std::cout << "\nPlease enter the number of players and creatures in the fight" << '\n';
+  std::cout << "\nPlease enter the number of players and creatures in the fight. (you can edit this later)" << '\n';
   int entity_count;
   std::cin >> entity_count;
   std::cout << "=== please enter all the creatures ===" << '\n';
@@ -84,12 +84,29 @@ void start_init() {
   std::sort(entities, entities + entity_count, cmp_init);
   int iter = 0;
   std::cout << "====== INIT BEGIN ======" << '\n';
-  std::cout << "press '\\' and enter to stop." << '\n';
+  std::cout << "Press '\\' and enter to stop. \nPress 'a' and enter to add another creature." << '\n';
   std::cout << '\n';
   while (true) {
     int c = getchar();
     if (c == 92) {
       break;
+    }
+    if (c == 97) {
+      ++entity_count;
+
+      std::cout << '\n';
+      std::cout << "name : ";
+      std::cin.ignore();
+      std::getline(std::cin, entities[entity_count - 1].name);
+      std::cout << "init : ";
+      std::cin >> entities[entity_count - 1].init;
+      std::cout << "AC : ";
+      std::cin >> entities[entity_count - 1].AC;
+      std::cout << '\n';
+
+      std::sort(entities, entities + entity_count, cmp_init);
+
+      continue;
     }
     std::cout << "It's " << entities[iter].name << "'s " << "turn.";
     std::cout << "(init " << entities[iter].init <<", Ac " << entities[iter].AC << ")";
@@ -143,7 +160,7 @@ int get_proficiency() {
   std::cout << "\nWhat is your total character level?" << '\n';
   std::cin >> character.level;
   character.level = std::min(character.level, 20);
-  proficiency_bonus = 1 + ((character.level / 4) + character.level % 4);
+  proficiency_bonus = 1 + (character.level / 4 + (character.level % 4 != 0));
   return proficiency_bonus;
 }
 
@@ -351,7 +368,7 @@ int calc_hp() {
 }
 
 int main(int argc, char const *argv[]) {
-  std::string version =  "1.3.1";
+  std::string version =  "1.4.0";
   print_welcome_message(version);
   std::cout << "press enter to continue..." << '\n';
   std::cin.get();
@@ -419,6 +436,7 @@ int main(int argc, char const *argv[]) {
     std::cin.get();
   } else if (opt == 6) {
     start_init();
+    std::cout << "\ninit ended." << '\n';
   } else {
     std::cout << "error : invalid input." << '\n';
     std::cout << "Press enter to exit..." << '\n';
