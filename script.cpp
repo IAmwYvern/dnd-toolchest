@@ -61,7 +61,7 @@ void print_options() {
   std::cout << "3 - get proficiency bonus" << '\n';
   std::cout << "4 - get ability modifier" << '\n';
   std::cout << "5 - get level based on exp" << '\n';
-  std::cout << "6 - keep track of initiative" << '\n';
+  std::cout << "6 - keep track of combat" << '\n';
 }
 
 void start_init() {
@@ -79,19 +79,21 @@ void start_init() {
     std::cin >> entities[i].init;
     std::cout << "AC : ";
     std::cin >> entities[i].AC;
+    std::cout << "HP : ";
+    std::cin >> entities[i].HP;
     std::cout << '\n';
   }
   std::sort(entities, entities + entity_count, cmp_init);
   int iter = 0;
+  int shown_iter = iter;
   std::cout << "====== INIT BEGIN ======" << '\n';
-  std::cout << "Press '\\' and enter to stop. \nPress 'a' and enter to add another creature." << '\n';
+  std::cout << "Press '\\' and enter to stop. \nPress 'a' and enter to add another creature. \nPress 'h' and enter to change the HP value." << '\n';
   std::cout << '\n';
   while (true) {
     int c = getchar();
     if (c == 92) {
       break;
-    }
-    if (c == 97) {
+    } else if (c == 97) {
       ++entity_count;
 
       std::cout << '\n';
@@ -102,14 +104,28 @@ void start_init() {
       std::cin >> entities[entity_count - 1].init;
       std::cout << "AC : ";
       std::cin >> entities[entity_count - 1].AC;
+      std::cout << "HP : " << '\n';
+      std::cin >> entities[entity_count - 1].HP;
       std::cout << '\n';
 
       std::sort(entities, entities + entity_count, cmp_init);
 
       continue;
+    } else if (c == 104) {
+      std::cout << "\nNew HP value : ";
+      int new_hp;
+      std::cin >> new_hp;
+      entities[shown_iter].HP = new_hp;
+      continue;
     }
     std::cout << "It's " << entities[iter].name << "'s " << "turn.";
-    std::cout << "(init " << entities[iter].init <<", Ac " << entities[iter].AC << ")";
+    std::cout << "(";
+    std::cout << "init " << entities[iter].init;
+    std::cout << ", AP " << entities[iter].AC;
+    std::cout << ", HP " << entities[iter].HP;
+    std::cout << ")";
+    shown_iter = iter;
+
     if (iter == entity_count - 1) {
       iter = 0;
       continue;
