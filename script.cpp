@@ -104,7 +104,7 @@ void start_init() {
       std::cin >> entities[entity_count - 1].init;
       std::cout << "AC : ";
       std::cin >> entities[entity_count - 1].AC;
-      std::cout << "HP : " << '\n';
+      std::cout << "HP : ";
       std::cin >> entities[entity_count - 1].HP;
       std::cout << '\n';
 
